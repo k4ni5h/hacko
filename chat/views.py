@@ -56,9 +56,21 @@ def post_facebook_message(fbid, recevied_message):
         print('status',status.json())
 
 def bot(messages):
-    mess=re.sub("[^\w]", " ", messages).split()
+    mess=re.sub("[^\w]", " ", messages.lower()).split()
     send=' '
-    if 'mean' in mess[-1]:
+    if 'hi' in mess || 'hello' in mess:
+        user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
+        user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'<page-access-token>'}
+        user = requests.get(user_details_url, user_details_params).json()
+        if user[first_name].lower()=='kanish':
+            send = 'yes boss'
+        elif user[gender].lower()=='male':
+            send = 'yes male'
+        elif user[gender].lower()=='female':
+            send = 'yes female'
+        else:
+            send = 'hello '+user[first_name]
+    elif 'mean' in mess[-1]:
         for i in range(0, len(mess)-1):
             send+=mess[i]+'\n'
             meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
