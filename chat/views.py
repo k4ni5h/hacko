@@ -67,11 +67,11 @@ def bot(messages):
             send+='\n'
     elif 'syno' in mess[-1]:
         for i in range(0, len(mess)-1):
-            send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[mess[i]])
+            send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
             send+='\n'
     elif 'anto' in mess[-1]:
         for i in range(0, len(mess)-1):
-            send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[mess[i]])
+            send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
             send+='\n'
     else:
         send=str(chatbot.get_response(messages))
