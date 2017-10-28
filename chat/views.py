@@ -47,7 +47,7 @@ class MeraBot(generic.View):
 
 # This function should be outside the BotsView class
 def post_facebook_message(fbid, recevied_message):
-    send_message=bot(recevied_message)
+    line=bot(recevied_message)
     short_message=[line[i:i+640] for i in range(0, len(line), 640)]
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'
     for i in range(len(short_message)):
