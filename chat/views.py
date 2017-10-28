@@ -47,7 +47,7 @@ class MeraBot(generic.View):
 
 # This function should be outside the BotsView class
 def post_facebook_message(fbid, recevied_message):
-    line=bot(recevied_message)
+    line=bot(fbid, recevied_message)
     short_message=[line[i:i+640] for i in range(0, len(line), 640)]
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'
     for i in range(len(short_message)):
@@ -55,7 +55,7 @@ def post_facebook_message(fbid, recevied_message):
         status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
         print('status',status.json())
 
-def bot(messages):
+def bot(fbid, messages):
     mess=re.sub("[^\w]", " ", messages.lower()).split()
     send=' '
     if 'hi' in mess or 'hello' in mess:
@@ -65,9 +65,9 @@ def bot(messages):
         if user[first_name].lower()=='kanish':
             send = 'yes boss'
         elif user[gender].lower()=='male':
-            send = 'yes male'
+            send = 'g**d mai konsi khaaz ho rahi hai'
         elif user[gender].lower()=='female':
-            send = 'yes female'
+            send = 'mujhe ye rishta manjoor hai'
         else:
             send = 'hello '+user[first_name]
     elif 'mean' in mess[-1]:
