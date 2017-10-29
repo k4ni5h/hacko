@@ -97,7 +97,7 @@ def bot(fbid, messages):
                 send+=mess[i]+' : Not Found'
             send+='\n'
     elif 'trans' in mess[-1]:
-        send+=str(bing(messages.rsplit(' ', 1)[0]),dst='hi')
+        send=str(bing(messages.rsplit(' ', 1)[0],dst='hi'))
     else:
         send=str(chatbot.get_response(messages))
     return send
