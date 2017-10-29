@@ -111,7 +111,7 @@ def bot(fbid, messages):
             else:
                 send=str(trans.translate(messages.rsplit(' ', 1)[0], dest='hi').text)
         elif isevaluable(messages):
-            send=eval(messages)
+            send=str(eval(messages))
         else:
             send=str(chatbot.get_response(messages))
     else:
