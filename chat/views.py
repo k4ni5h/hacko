@@ -62,14 +62,14 @@ def bot(fbid, messages):
         user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
         user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'<page-access-token>'}
         user = requests.get(user_details_url, user_details_params).json()
-        if user[first_name].lower()=='kanish':
+        if user['first_name'].lower()=='kanish':
             send = 'yes boss'
-        elif user[gender].lower()=='male':
+        elif user['gender'].lower()=='male':
             send = 'g**d mai konsi khaaz ho rahi hai'
-        elif user[gender].lower()=='female':
+        elif user['gender'].lower()=='female':
             send = 'mujhe ye rishta manjoor hai'
         else:
-            send = 'hello '+user[first_name]
+            send = 'hello '+user['first_name']
     elif 'mean' in mess[-1]:
         for i in range(0, len(mess)-1):
             send+=mess[i]+'\n'
