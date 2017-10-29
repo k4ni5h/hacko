@@ -66,7 +66,7 @@ def bot(fbid, messages):
         if user['first_name'].lower()=='kanish':
             send = 'yes boss'
         elif user['gender'].lower()=='male':
-            send = 'g**d mai konsi khaaz ho rahi hai'
+            send = 'bol BC'
         elif user['gender'].lower()=='female':
             send = 'mujhe ye rishta manjoor hai'
         else:
@@ -75,9 +75,10 @@ def bot(fbid, messages):
         for i in range(0, len(mess)-1):
             send+=mess[i]+'\n'
             meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
-            for key in meaning:
-                send+=key+' : '+str(meaning[key])+'\n'
-            send+='\n'
+            if meaning:
+                for key in meaning:
+                    send+=key+' : '+str(meaning[key])+'\n'
+                send+='\n'
     elif 'syno' in mess[-1]:
         for i in range(0, len(mess)-1):
             send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
