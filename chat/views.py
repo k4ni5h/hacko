@@ -62,6 +62,7 @@ def bot(fbid, messages):
         user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
         user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'<page-access-token>'}
         user = requests.get(user_details_url, user_details_params).json()
+        print(str(user))
         if user['first_name'].lower()=='kanish':
             send = 'yes boss'
         elif user['gender'].lower()=='male':
