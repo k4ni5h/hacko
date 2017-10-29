@@ -43,12 +43,12 @@ class MeraBot(generic.View):
                 if 'message' in message:
                     # Print the message to the terminal
                     print('message',message)
-                    post_facebook_message(message['sender']['id'], str(trans.translate(message['message']['text'])))
+                    post_facebook_message(message['sender']['id'], trans.translate(message['message']['text']).text)
         return HttpResponse()
 
 # This function should be outside the BotsView class
 def post_facebook_message(fbid, recevied_message):
-    line=bot(fbid, recevied_message)
+    line=bot(fbid, str(recevied_message))
     short_message=[line[i:i+640] for i in range(0, len(line), 640)]
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'
     for i in range(len(short_message)):
