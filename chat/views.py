@@ -60,7 +60,7 @@ def bot(fbid, messages):
     mess=re.sub("[^\w]", " ", messages.lower()).split()
     send=''
     if len(mess)>0:
-        if 'hi' in mess or 'hello' in mess or 'hi'==mess[0][0:2]:
+        if 'hello' in mess or mess[0][0:2]=='hi':
             user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
             user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
             user = requests.get(user_details_url, user_details_params).json()
@@ -73,7 +73,7 @@ def bot(fbid, messages):
                 send = 'mujhe ye rishta manjoor hai'
             else:
                 send = 'hello '+user['first_name']
-        elif 'mean'==mess[-1][0:5] and len(mess)>1:
+        elif mess[-1][0:5]=='mean' and len(mess)>1:
             for i in range(0, len(mess)-1):
                 send+=mess[i]+'\n'
                 meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
@@ -83,25 +83,25 @@ def bot(fbid, messages):
                     send+='\n'
                 else:
                     send+='Meaning not Found\n'
-        elif 'syno'==mess[-1][0:5] and len(mess)>1:
+        elif mess[-1][0:5]=='syno' and len(mess)>1:
             for i in range(0, len(mess)-1):
                 if PyDictionary(mess[i]).getSynonyms()[0]:
                    send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
                 else:
                     send+=mess[i]+' : Not Found'
                 send+='\n'
-        elif 'anto'==mess[-1][0:5] and len(mess)>1:
+        elif mess[-1][0:5]=='anto' and len(mess)>1:
             for i in range(0, len(mess)-1):
                 if PyDictionary(mess[i]).getAntonyms()[0]:
                     send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
                 else:
                     send+=mess[i]+' : Not Found'
                 send+='\n'
-        elif 'trans'==mess[-1][0:5] and len(mess)>1:
+        elif mess[-1][0:5]=='trans' and len(mess)>1:
             if mess[-2][0:2]=='en' and len(mess)>2:
-                send=str(trans.translate(messages.rsplit(' ', 2)[0],dest='en').text)
+                send=str(trans.translate(messages.rsplit(' ', 2)[0], dest='en').text)
             else:
-                send=str(trans.translate(messages.rsplit(' ', 1)[0],dest='hi').text)
+                send=str(trans.translate(messages.rsplit(' ', 1)[0], dest='hi').text)
         else:
             send=str(chatbot.get_response(messages))
     else:
