@@ -15,6 +15,14 @@ chatbot = ChatBot(
     'Ron Obvious',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
 )
+
+def isevaluable(s):
+    try:
+        eval(s)
+        return True
+    except:
+        return False
+
 trans=Translator()
 # Train based on the english corpus
 chatbot.train("chatterbot.corpus.english")
@@ -102,6 +110,8 @@ def bot(fbid, messages):
                 send=str(trans.translate(messages.rsplit(' ', 2)[0], dest='en').text)
             else:
                 send=str(trans.translate(messages.rsplit(' ', 1)[0], dest='hi').text)
+        elif isevaluable(messages):
+            send=eval(messages)
         else:
             send=str(chatbot.get_response(messages))
     else:
