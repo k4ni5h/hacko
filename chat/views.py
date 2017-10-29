@@ -73,7 +73,7 @@ def bot(fbid, messages):
                 send = 'mujhe ye rishta manjoor hai'
             else:
                 send = 'hello '+user['first_name']
-        elif 'mean'==mess[-1][0:5] && len(mess)>1:
+        elif 'mean'==mess[-1][0:5] and len(mess)>1:
             for i in range(0, len(mess)-1):
                 send+=mess[i]+'\n'
                 meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
@@ -83,22 +83,22 @@ def bot(fbid, messages):
                     send+='\n'
                 else:
                     send+='Meaning not Found\n'
-        elif 'syno'==mess[-1][0:5] && len(mess)>1:
+        elif 'syno'==mess[-1][0:5] and len(mess)>1:
             for i in range(0, len(mess)-1):
                 if PyDictionary(mess[i]).getSynonyms()[0]:
                    send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
                 else:
                     send+=mess[i]+' : Not Found'
                 send+='\n'
-        elif 'anto'==mess[-1][0:5] && len(mess)>1:
+        elif 'anto'==mess[-1][0:5] and len(mess)>1:
             for i in range(0, len(mess)-1):
                 if PyDictionary(mess[i]).getAntonyms()[0]:
                     send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
                 else:
                     send+=mess[i]+' : Not Found'
                 send+='\n'
-        elif 'trans'==mess[-1][0:5] && len(mess)>1:
-            if mess[-2][0:2]=='en' && len(mess)>2:
+        elif 'trans'==mess[-1][0:5] and len(mess)>1:
+            if mess[-2][0:2]=='en' and len(mess)>2:
                 send=str(trans.translate(messages.rsplit(' ', 2)[0],dest='en').text)
             else:
                 send=str(trans.translate(messages.rsplit(' ', 1)[0],dest='hi').text)
