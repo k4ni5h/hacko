@@ -59,45 +59,48 @@ def post_facebook_message(fbid, recevied_message):
 def bot(fbid, messages):
     mess=re.sub("[^\w]", " ", messages.lower()).split()
     send=''
-    if 'hi' in mess or 'hello' in mess:
-        user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
-        user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
-        user = requests.get(user_details_url, user_details_params).json()
-        print('user', str(user))
-        if user['first_name'].lower()=='kanish':
-            send = 'yes boss'
-        elif user['gender'].lower()=='male':
-            send = 'bol BC'
-        elif user['gender'].lower()=='female':
-            send = 'mujhe ye rishta manjoor hai'
-        else:
-            send = 'hello '+user['first_name']
-    elif 'mean' in mess[-1]:
-        for i in range(0, len(mess)-1):
-            send+=mess[i]+'\n'
-            meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
-            if meaning:
-                for key in meaning:
-                    send+=key+' : '+str(meaning[key])+'\n'
+    if len(mess)>0:
+        if 'hi' in mess or 'hello' in mess:
+            user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
+            user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
+            user = requests.get(user_details_url, user_details_params).json()
+            print('user', str(user))
+            if user['first_name'].lower()=='kanish':
+                send = 'yes boss'
+            elif user['gender'].lower()=='male':
+                send = 'bol BC'
+            elif user['gender'].lower()=='female':
+                send = 'mujhe ye rishta manjoor hai'
+            else:
+                send = 'hello '+user['first_name']
+        elif 'mean' in mess[-1]:
+            for i in range(0, len(mess)-1):
+                send+=mess[i]+'\n'
+                meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
+                if meaning:
+                    for key in meaning:
+                        send+=key+' : '+str(meaning[key])+'\n'
+                    send+='\n'
+                else:
+                    send+='Meaning not Found\n'
+        elif 'syno' in mess[-1]:
+            for i in range(0, len(mess)-1):
+                if PyDictionary(mess[i]).getSynonyms()[0]:
+                   send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
+                else:
+                    send+=mess[i]+' : Not Found'
                 send+='\n'
-            else:
-                send+='Meaning not Found\n'
-    elif 'syno' in mess[-1]:
-        for i in range(0, len(mess)-1):
-            if PyDictionary(mess[i]).getSynonyms()[0]:
-               send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
-            else:
-                send+=mess[i]+' : Not Found'
-            send+='\n'
-    elif 'anto' in mess[-1]:
-        for i in range(0, len(mess)-1):
-            if PyDictionary(mess[i]).getAntonyms()[0]:
-                send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
-            else:
-                send+=mess[i]+' : Not Found'
-            send+='\n'
-    elif 'trans' in mess[-1]:
-        send=str(bing(messages.rsplit(' ', 1)[0],dst='hi'))
+        elif 'anto' in mess[-1]:
+            for i in range(0, len(mess)-1):
+                if PyDictionary(mess[i]).getAntonyms()[0]:
+                    send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
+                else:
+                    send+=mess[i]+' : Not Found'
+                send+='\n'
+        elif 'trans' in mess[-1]:
+            send=str(bing(messages.rsplit(' ', 1)[0],dst='hi'))
+        else:
+            send=str(chatbot.get_response(messages))
     else:
-        send=str(chatbot.get_response(messages))
+        send=messages
     return send
