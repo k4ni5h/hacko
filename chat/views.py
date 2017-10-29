@@ -43,7 +43,7 @@ class MeraBot(generic.View):
                 if 'message' in message:
                     # Print the message to the terminal
                     print('message',message)
-                    post_facebook_message(message['sender']['id'], trans.translate(message['message']['text']))
+                    post_facebook_message(message['sender']['id'], str(trans.translate(message['message']['text'])))
         return HttpResponse()
 
 # This function should be outside the BotsView class
