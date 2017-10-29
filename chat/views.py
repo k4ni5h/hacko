@@ -133,7 +133,7 @@ def bot(fbid, messages):
                     send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
                 else:
                     send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-        if send='':
+        if send=='':
             send=str(chatbot.get_response(messages))
     else:
         send=messages
