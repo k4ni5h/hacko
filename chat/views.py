@@ -1,7 +1,7 @@
 # yomamabot/fb_yomamabot/views.py
 import json, requests, random, re
 from pprint import pprint
-
+import wikipedia
 from django.views import generic
 from django.http.response import HttpResponse
 
@@ -112,7 +112,28 @@ def bot(fbid, messages):
                 send=str(trans.translate(messages.rsplit(' ', 1)[0], dest='hi').text)
         elif isevaluable(messages):
             send=str(eval(messages))
-        else:
+        elif mess[0][0:4]=='wiki' and len(mess)>1:
+            if mess[1][0:3]=='sum' and len(mess)>2:
+                try: send=str(wikipedia.summary(messages.rsplit(' ', 2)[0], sentences=1))
+                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
+            elif mess[1][0:3]=='lsum' and len(mess)>2:
+                try: send=str(wikipedia.summary(messages.rsplit(' ', 2)[0]))
+                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
+            elif mess[1][0:3]=='url' and len(mess)>2:
+                try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).url)
+                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
+            elif mess[1][0:3]=='con' and len(mess)>2:
+                try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).content)
+                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
+            elif mess[1][0:4]=='link' and len(mess)>2:
+                try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).links[0])
+                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
+            else:
+                if mess[1]='search':
+                    send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
+                else:
+                    send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        if send='':
             send=str(chatbot.get_response(messages))
     else:
         send=messages
