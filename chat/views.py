@@ -79,6 +79,8 @@ def bot(fbid, messages):
                 for key in meaning:
                     send+=key+' : '+str(meaning[key])+'\n'
                 send+='\n'
+            else:
+                send+=meaning+'\n'
     elif 'syno' in mess[-1]:
         for i in range(0, len(mess)-1):
             send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
