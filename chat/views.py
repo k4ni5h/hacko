@@ -9,13 +9,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from chatterbot import ChatBot
 from PyDictionary import PyDictionary
-from translation import bing
+from googletrans import Translator
 
 chatbot = ChatBot(
     'Ron Obvious',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
 )
-
+trans=Translator()
 # Train based on the english corpus
 chatbot.train("chatterbot.corpus.english")
 
@@ -98,7 +98,7 @@ def bot(fbid, messages):
                     send+=mess[i]+' : Not Found'
                 send+='\n'
         elif 'trans' in mess[-1]:
-            send=str(bing(messages.rsplit(' ', 1)[0],dst='hi'))
+            send=str(trans.translate(messages.rsplit(' ', 1)[0],dest='hi').text)
         else:
             send=str(chatbot.get_response(messages))
     else:

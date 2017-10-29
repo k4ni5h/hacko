@@ -8,4 +8,4 @@ gunicorn==19.7.1
 requests==2.18.4
 PyDictionary==1.5.2
 chatterbot==0.7.6
-translation==1.0.5
+googletrans==2.2.0
