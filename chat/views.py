@@ -42,6 +42,7 @@ class MeraBot(generic.View):
                 # This might be delivery, optin, postback for other events
                 if 'message' in message:
                     # Print the message to the terminal
+                    message=trans.translate(message)
                     print('message',message)
                     post_facebook_message(message['sender']['id'], message['message']['text'])
         return HttpResponse()
