@@ -129,7 +129,7 @@ def bot(fbid, messages):
                 try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).links[0])
                 except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
             else:
-                if mess[1]='search':
+                if mess[1]=='search':
                     send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
                 else:
                     send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
