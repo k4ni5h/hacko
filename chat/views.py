@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from chatterbot import ChatBot
 from PyDictionary import PyDictionary
+from translation import bing
 
 chatbot = ChatBot(
     'Ron Obvious',
@@ -57,7 +58,7 @@ def post_facebook_message(fbid, recevied_message):
 
 def bot(fbid, messages):
     mess=re.sub("[^\w]", " ", messages.lower()).split()
-    send=' '
+    send=''
     if 'hi' in mess or 'hello' in mess:
         user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
         user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
@@ -95,6 +96,8 @@ def bot(fbid, messages):
             else:
                 send+=mess[i]+' : Not Found'
             send+='\n'
+    elif 'trans' in mess[-1]:
+        send+=str(bing(messages.rsplit(' ', 1)[0]),dst='hi')
     else:
         send=str(chatbot.get_response(messages))
     return send
