@@ -83,11 +83,17 @@ def bot(fbid, messages):
                 send+='Meaning not Found\n'
     elif 'syno' in mess[-1]:
         for i in range(0, len(mess)-1):
-            send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
+            if PyDictionary(mess[i]).getSynonyms()[0]:
+               send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
+            else:
+                send+=mess[i]+' : Not Found'
             send+='\n'
     elif 'anto' in mess[-1]:
         for i in range(0, len(mess)-1):
-            send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
+            if PyDictionary(mess[i]).getAntonyms()[0]:
+                send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
+            else:
+                send+=mess[i]+' : Not Found'
             send+='\n'
     else:
         send=str(chatbot.get_response(messages))
