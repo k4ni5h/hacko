@@ -99,7 +99,7 @@ def bot(fbid, messages):
                 send+='\n'
         elif 'trans' in mess[-1]:
             if mess[-2][0:2]=='en':
-                send=str(trans.translate(messages.rsplit(' ', 1)[0],dest='en').text)
+                send=str(trans.translate(messages.rsplit(' ', 2)[0],dest='en').text)
             else:
                 send=str(trans.translate(messages.rsplit(' ', 1)[0],dest='hi').text)
         else:
