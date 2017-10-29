@@ -60,7 +60,7 @@ def bot(fbid, messages):
     send=' '
     if 'hi' in mess or 'hello' in mess:
         user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
-        user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'<page-access-token>'}
+        user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
         user = requests.get(user_details_url, user_details_params).json()
         print('user', str(user))
         if user['first_name'].lower()=='kanish':
