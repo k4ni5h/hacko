@@ -112,28 +112,24 @@ def bot(fbid, messages):
                 send=str(trans.translate(messages.rsplit(' ', 1)[0], dest='hi').text)
         elif isevaluable(messages):
             send=str(eval(messages))
-        elif mess[-1][0:4]=='wiki' and len(mess)>1:
-            if mess[-2][0:3]=='sum' and len(mess)>2:
-                try: send=str(wikipedia.summary(messages.rsplit(' ', 2)[0], sentences=1))
-                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
-            elif mess[-2][0:3]=='lsum' and len(mess)>2:
-                try: send=str(wikipedia.summary(messages.rsplit(' ', 2)[0]))
-                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
-            elif mess[-2][0:3]=='url' and len(mess)>2:
-                try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).url)
-                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
-            elif mess[-2][0:3]=='con' and len(mess)>2:
-                try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).content)
-                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
-            elif mess[-2][0:4]=='link' and len(mess)>2:
-                try: send=str(wikipedia.page(messages.rsplit(' ', 2)[0]).links[0])
-                except: send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
-            else:
-                if mess[-2]=='search':
-                    send=str(wikipedia.search(messages.rsplit(' ', 2)[0]))
-                else:
-                    send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-        if send=='':
+        elif mess[-1][0:3]=='sum' and len(mess)>1:
+            try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0], sentences=1))
+            except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        elif mess[-1][0:3]=='lsum' and len(mess)>1:
+            try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0]))
+            except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        elif mess[-1][0:3]=='url' and len(mess)>1:
+            try: send=str(wikipedia.page(messages.rsplit(' ', 1)[0]).url)
+            except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        elif mess[-1][0:3]=='con' and len(mess)>1:
+            try: send=str(wikipedia.page(messages.rsplit(' ', 1)[0]).content)
+            except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        elif mess[-1][0:4]=='link' and len(mess)>1:
+            try: send=str(wikipedia.page(messages.rsplit(' ', 1)[0]).links[0])
+            except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        elif mess[-1][0:6]=='search' and len(mess)>1:
+            send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        else:
             send=str(chatbot.get_response(messages))
     else:
         send=messages
