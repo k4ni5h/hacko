@@ -68,7 +68,7 @@ def bot(fbid, messages):
     mess=re.sub("[^\w]", " ", messages.lower()).split()
     send=''
     if len(mess)>0:
-        if ('hello' in trans.translate(mess).text) or mess[0][0:2]=='hi':
+        if ('hello' in mess) or mess[0][0:2]=='hi' or ('hello' in trans.translate(messages).text):
             user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
             user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
             user = requests.get(user_details_url, user_details_params).json()
@@ -81,7 +81,7 @@ def bot(fbid, messages):
                 send = 'mujhe ye rishta manjoor hai'
             else:
                 send = 'hello '+user['first_name']
-        elif mess[-1][0:5]=='mean' and len(mess)>1:
+        elif mess[-1][0:4]=='mean' and len(mess)>1:
             for i in range(0, len(mess)-1):
                 send+=mess[i]+'\n'
                 meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
@@ -91,14 +91,14 @@ def bot(fbid, messages):
                     send+='\n'
                 else:
                     send+='Meaning not Found\n'
-        elif mess[-1][0:5]=='syno' and len(mess)>1:
+        elif mess[-1][0:4]=='syno' and len(mess)>1:
             for i in range(0, len(mess)-1):
                 if PyDictionary(mess[i]).getSynonyms()[0]:
                    send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
                 else:
                     send+=mess[i]+' : Not Found'
                 send+='\n'
-        elif mess[-1][0:5]=='anto' and len(mess)>1:
+        elif mess[-1][0:4]=='anto' and len(mess)>1:
             for i in range(0, len(mess)-1):
                 if PyDictionary(mess[i]).getAntonyms()[0]:
                     send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
@@ -115,7 +115,7 @@ def bot(fbid, messages):
         elif mess[-1][0:3]=='sum' and len(mess)>1:
             try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0], sentences=3))
             except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-        elif mess[-1][0:3]=='lsum' and len(mess)>1:
+        elif mess[-1][0:4]=='lsum' and len(mess)>1:
             try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0]))
             except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
         elif mess[-1][0:3]=='url' and len(mess)>1:
