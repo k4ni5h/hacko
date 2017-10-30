@@ -51,7 +51,7 @@ class MeraBot(generic.View):
                 if 'message' in message:
                     # Print the message to the terminal
                     print('message',message)
-                    post_facebook_message(message['sender']['id'], trans.translate(message['message']['text']).text)
+                    post_facebook_message(message['sender']['id'], message['message']['text'])
         return HttpResponse()
 
 # This function should be outside the BotsView class
@@ -130,7 +130,7 @@ def bot(fbid, messages):
         elif mess[-1][0:6]=='search' and len(mess)>1:
             send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
         else:
-            send=str(chatbot.get_response(messages))
+            send=str(chatbot.get_response(trans.translate(messages).text))
     else:
         send=messages
     return send
