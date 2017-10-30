@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from chatterbot import ChatBot
 from PyDictionary import PyDictionary
 from googletrans import Translator
+from weather import Weather
 
 chatbot = ChatBot(
     'Ron Obvious',
@@ -26,6 +27,7 @@ def isevaluable(s):
 trans=Translator()
 # Train based on the english corpus
 chatbot.train("chatterbot.corpus.english")
+weather=Weather()
 
 class MeraBot(generic.View):
     def get(self, request, *args, **kwargs):
@@ -129,6 +131,11 @@ def bot(fbid, messages):
             except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
         elif mess[-1][0:6]=='search' and len(mess)>1:
             send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
+        elif mess[-1][0:7]=='weather' and len(mess)>1:
+            location = weather.lookup_by_location(messages.rsplit(' ', 1)[0])
+            condition = location.condition()
+            condition['temp']=round((int(condition['temp'])-32)*50/9)/10
+            send=str(condition)
         else:
             send=str(chatbot.get_response(trans.translate(messages).text))
     else:
