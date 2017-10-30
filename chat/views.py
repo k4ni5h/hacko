@@ -140,7 +140,7 @@ def bot(fbid, messages):
             location = weather.lookup_by_location(messages.rsplit(' ', 1)[0])
             fo = location.forecast()
             for f in fo:
-                send+=f.text()+' '+f.date()+' '+round((int(f.high())-32)*50/9)/10+' '+round((int(f.low())-32)*50/9)/10+'\n'
+                send+=f.text()+' '+f.date()+' '+str(round((int(f.high())-32)*50/9)/10)+' '+str(round((int(f.low())-32)*50/9)/10)+'\n'
         else:
             send=str(chatbot.get_response(trans.translate(messages).text))
     else:
