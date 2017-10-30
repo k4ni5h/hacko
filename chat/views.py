@@ -113,7 +113,7 @@ def bot(fbid, messages):
         elif isevaluable(messages):
             send=str(eval(messages))
         elif mess[-1][0:3]=='sum' and len(mess)>1:
-            try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0], sentences=1))
+            try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0], sentences=3))
             except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
         elif mess[-1][0:3]=='lsum' and len(mess)>1:
             try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0]))
