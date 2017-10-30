@@ -131,11 +131,16 @@ def bot(fbid, messages):
             except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
         elif mess[-1][0:6]=='search' and len(mess)>1:
             send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-        elif mess[-1][0:7]=='weather' and len(mess)>1:
+        elif mess[-1][0:5]=='weath' and len(mess)>1:
             location = weather.lookup_by_location(messages.rsplit(' ', 1)[0])
             condition = location.condition()
             condition['temp']=round((int(condition['temp'])-32)*50/9)/10
             send=str(condition)
+        elif mess[-1][0:6]=='lweath' and len(mess)>1:
+            location = weather.lookup_by_location(messages.rsplit(' ', 1)[0])
+            fo = location.forecast()
+            for f in fo:
+                send+=f.text()+' '+f.date()+' '+round((int(f.high())-32)*50/9)/10+' '+round((int(f.low())-32)*50/9)/10+'\n'
         else:
             send=str(chatbot.get_response(trans.translate(messages).text))
     else:
