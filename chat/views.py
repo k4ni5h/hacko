@@ -11,11 +11,15 @@ from chatterbot import ChatBot
 from PyDictionary import PyDictionary
 from googletrans import Translator
 from weather import Weather
+from chatterbot.trainers import ListTrainer
+from .chat import chat
 
 chatbot = ChatBot(
     'Ron Obvious',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
 )
+chatbot.set_trainer(ListTrainer)
+chatbot.train(chat)
 
 def isevaluable(s):
     try:
@@ -27,6 +31,7 @@ def isevaluable(s):
 trans=Translator()
 # Train based on the english corpus
 chatbot.train("chatterbot.corpus.english")
+chatbot.train("chatterbot.corpus.hindi")
 weather=Weather()
 
 class MeraBot(generic.View):
