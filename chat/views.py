@@ -14,6 +14,9 @@ from weather import Weather
 from chatterbot.trainers import ListTrainer
 from .chat import chat
 
+import math
+import random
+
 chatbot = ChatBot(
     'Ron Obvious',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
