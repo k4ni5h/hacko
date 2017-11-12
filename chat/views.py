@@ -15,14 +15,11 @@ from chatterbot.trainers import ListTrainer
 from .chat import chat
 
 import math
-import random
 
 chatbot = ChatBot(
-    'Ron Obvious',
+    'Ikan',
     trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
 )
-chatbot.set_trainer(ListTrainer)
-chatbot.train(chat)
 
 def isevaluable(s):
     try:
@@ -33,8 +30,10 @@ def isevaluable(s):
 
 trans=Translator()
 # Train based on the english corpus
-chatbot.train("chatterbot.corpus.hindi")
-chatbot.train("chatterbot.corpus.english")
+chatbot.train(
+    "chatterbot.corpus.hindi",
+    "chatterbot.corpus.english",
+)
 weather=Weather()
 
 class MeraBot(generic.View):
@@ -72,7 +71,7 @@ def post_facebook_message(fbid, recevied_message):
     for i in range(len(short_message)):
         response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":short_message[i]}})
         status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
-        print('status',status.json())
+        #print('status',status.json())
 
 def bot(fbid, messages):
     mess=re.sub("[^\w]", " ", messages.lower()).split()
@@ -83,7 +82,7 @@ def bot(fbid, messages):
                 user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
                 user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
                 user = requests.get(user_details_url, user_details_params).json()
-                print('user', str(user))
+                #print('user', str(user))
                 if user['first_name'].lower()=='kanish':
                     send = 'yes boss'
                 elif user['gender'].lower()=='male':
@@ -151,9 +150,9 @@ def bot(fbid, messages):
                 for f in fo:
                     send+=f.text()+' '+f.date()+' '+str(round((int(f.high())-32)*50/9)/10)+' '+str(round((int(f.low())-32)*50/9)/10)+'\n'
             else:
-                send=str(chatbot.get_response(trans.translate(messages).text))
+                send=str(chatbot.get_response('sahd abdh'+trans.translate(messages).text))
         except:
-            send=str(chatbot.get_response(trans.translate(messages).text))
+            send=str(chatbot.get_response('dhsag asdbh'+trans.translate(messages).text))
     else:
         send=messages
     return send
