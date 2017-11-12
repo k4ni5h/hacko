@@ -33,8 +33,8 @@ def isevaluable(s):
 
 trans=Translator()
 # Train based on the english corpus
-chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.hindi")
+chatbot.train("chatterbot.corpus.english")
 weather=Weather()
 
 class MeraBot(generic.View):
