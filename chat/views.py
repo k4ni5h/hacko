@@ -86,7 +86,7 @@ def bot(fbid, messages):
                 if user['first_name'].lower()=='kanish':
                     send = 'yes boss'
                 elif user['gender'].lower()=='male':
-                    send = 'bol BC'
+                    send = 'bol'
                 elif user['gender'].lower()=='female':
                     send = 'mujhe ye rishta manjoor hai'
                 else:
