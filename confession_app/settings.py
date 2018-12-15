@@ -25,7 +25,10 @@ SECRET_KEY = '!3ds69%laaom@eclp6*s_177qg0+gvn^lm^5v#atx9)ma6fjv='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['merabot.herokuapp.com']
+ALLOWED_HOSTS = [
+    '8fb53b7d.ngrok.io',
+    'localhost:8000'
+]
 
 
 # Application definition

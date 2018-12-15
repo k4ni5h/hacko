@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
-from chat.views import MeraBot
+from chat.views import MeraBot, Privacy
 urlpatterns = [
-                  url(r'^MeraBotHaiBC/?$', MeraBot.as_view()) 
+                  url(r'^MeraBot/?$', MeraBot.as_view()),
+                  url(r'^privacy/?$', Privacy.as_view()),
                ]

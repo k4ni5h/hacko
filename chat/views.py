@@ -7,19 +7,14 @@ from django.http.response import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from chatterbot import ChatBot
 from PyDictionary import PyDictionary
 from googletrans import Translator
 from weather import Weather
-from chatterbot.trainers import ListTrainer
 from .chat import chat
 
 import math
 
-chatbot = ChatBot(
-    'Ikan',
-    trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
-)
+PAGE_ACCESS_TOKEN=""
 
 def isevaluable(s):
     try:
@@ -28,17 +23,12 @@ def isevaluable(s):
     except:
         return False
 
-trans=Translator()
 # Train based on the english corpus
-chatbot.train(
-    "chatterbot.corpus.hindi",
-    "chatterbot.corpus.english",
-)
 weather=Weather()
 
 class MeraBot(generic.View):
     def get(self, request, *args, **kwargs):
-        if self.request.GET['hub.verify_token'] == '2611bombay':
+        if self.request.GET['hub.verify_token'] == 'hacko_1.0halla_b0l':
             return HttpResponse(self.request.GET['hub.challenge'])
         else:
             return HttpResponse('Error, invalid token')
@@ -56,103 +46,33 @@ class MeraBot(generic.View):
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 # Check to make sure the received call is a message call
-                # This might be delivery, optin, postback for other events
+                # This might be delivery, optin, postback for other events 
                 if 'message' in message:
-                    # Print the message to the terminal
-                    print('message',message)
-                    post_facebook_message(message['sender']['id'], message['message']['text'])
+                    pprint(str(incoming_message))
+                    post_facebook_message(message['sender']['id'], message['message']['text']) 
         return HttpResponse()
 
-# This function should be outside the BotsView class
-def post_facebook_message(fbid, recevied_message):
-    line=bot(fbid, str(recevied_message))
-    short_message=[line[i:i+640] for i in range(0, len(line), 640)]
-    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'
-    for i in range(len(short_message)):
-        response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":short_message[i]}})
-        status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
-        #print('status',status.json())
+class Privacy(generic.View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('MY PRIVACIES ARE NOTHING')
+    # The get method is the same as before.. omitted here for brevity
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return generic.View.dispatch(self, request, *args, **kwargs)
 
-def bot(fbid, messages):
-    mess=re.sub("[^\w]", " ", messages.lower()).split()
-    send=''
-    if len(mess)>0:
-        try:
-            if ('hello' in mess) or mess[0][0:2]=='hi' or ('hello' in trans.translate(messages).text):
-                user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
-                user_details_params = {'fields':'first_name,last_name,gender', 'access_token':'EAAY95nBokmEBACAsQRp4E9NVsXQgKWdIyrTItZC1qWk4tr0hm0eJvgCBSc6TGJGpYwmitbFxQW3KJY2l1P9cW7nj391OFHlvSvBnHt8XJZAMyAAZAdmEDSoiZBI6mbQqn7XX8n1M9ZA6FLnvBP99xNrozPJZBzjy0zoOghCqZAqXgZDZD'}
-                user = requests.get(user_details_url, user_details_params).json()
-                #print('user', str(user))
-                if user['first_name'].lower()=='kanish':
-                    send = 'yes boss'
-                elif user['gender'].lower()=='male':
-                    send = 'bol'
-                elif user['gender'].lower()=='female':
-                    send = 'mujhe ye rishta manjoor hai'
-                else:
-                    send = 'hello '+user['first_name']
-            elif mess[-1][0:4]=='mean' and len(mess)>1:
-                for i in range(0, len(mess)-1):
-                    send+=mess[i]+'\n'
-                    meaning=PyDictionary(mess[i]).getMeanings()[mess[i]]
-                    if meaning:
-                        for key in meaning:
-                            send+=key+' : '+str(meaning[key])+'\n'
-                        send+='\n'
-                    else:
-                        send+='Meaning not Found\n'
-            elif mess[-1][0:4]=='syno' and len(mess)>1:
-                for i in range(0, len(mess)-1):
-                    if PyDictionary(mess[i]).getSynonyms()[0]:
-                       send+=mess[i]+' : '+str(PyDictionary(mess[i]).getSynonyms()[0][mess[i]])
-                    else:
-                        send+=mess[i]+' : Not Found'
-                    send+='\n'
-            elif mess[-1][0:4]=='anto' and len(mess)>1:
-                for i in range(0, len(mess)-1):
-                    if PyDictionary(mess[i]).getAntonyms()[0]:
-                        send+=mess[i]+' : '+str(PyDictionary(mess[i]).getAntonyms()[0][mess[i]])
-                    else:
-                        send+=mess[i]+' : Not Found'
-                    send+='\n'
-            elif mess[-1][0:5]=='trans' and len(mess)>1:
-                if mess[-2][0:2]=='en' and len(mess)>2:
-                    send=str(trans.translate(messages.rsplit(' ', 2)[0], dest='en').text)
-                else:
-                    send=str(trans.translate(messages.rsplit(' ', 1)[0], dest='hi').text)
-            elif isevaluable(messages):
-                send=str(eval(messages))
-            elif mess[-1][0:3]=='sum' and len(mess)>1:
-                try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0], sentences=3))
-                except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-            elif mess[-1][0:4]=='lsum' and len(mess)>1:
-                try: send=str(wikipedia.summary(messages.rsplit(' ', 1)[0]))
-                except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-            elif mess[-1][0:3]=='url' and len(mess)>1:
-                try: send=str(wikipedia.page(messages.rsplit(' ', 1)[0]).url)
-                except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-            elif mess[-1][0:3]=='con' and len(mess)>1:
-                try: send=str(wikipedia.page(messages.rsplit(' ', 1)[0]).content)
-                except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-            elif mess[-1][0:4]=='link' and len(mess)>1:
-                try: send=str(wikipedia.page(messages.rsplit(' ', 1)[0]).links[0])
-                except: send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-            elif mess[-1][0:6]=='search' and len(mess)>1:
-                send=str(wikipedia.search(messages.rsplit(' ', 1)[0]))
-            elif mess[-1][0:5]=='weath' and len(mess)>1:
-                location = weather.lookup_by_location(messages.rsplit(' ', 1)[0])
-                condition = location.condition()
-                condition['temp']=round((int(condition['temp'])-32)*50/9)/10
-                send=str(condition)
-            elif mess[-1][0:6]=='lweath' and len(mess)>1:
-                location = weather.lookup_by_location(messages.rsplit(' ', 1)[0])
-                fo = location.forecast()
-                for f in fo:
-                    send+=f.text()+' '+f.date()+' '+str(round((int(f.high())-32)*50/9)/10)+' '+str(round((int(f.low())-32)*50/9)/10)+'\n'
-            else:
-                send=str(chatbot.get_response('sahd abdh'+trans.translate(messages).text))
-        except:
-            send=str(chatbot.get_response('dhsag asdbh'+trans.translate(messages).text))
-    else:
-        send=messages
-    return send
+    # Post function to handle Facebook messages
+    def post(self, request, *args, **kwargs):
+        return HttpResponse('MY PRIVACIES ARE NOTHING')
+
+
+def post_facebook_message(fbid, recevied_message):
+
+    user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
+    user_details_params = {'fields':'first_name,last_name,profile_pic', 'access_token':PAGE_ACCESS_TOKEN}
+    user_details = requests.get(user_details_url, user_details_params).json()
+    joke_text = 'Yo '+user_details['first_name']+'..!' + joke_text
+
+    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token='+PAGE_ACCESS_TOKEN 
+    response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":recevied_message}})
+    status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
+    pprint(status.json())
